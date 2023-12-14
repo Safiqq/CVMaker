@@ -53,6 +53,7 @@ def create_pdf(margins):
     styles.add(ParagraphStyle(name="CVTitle", fontName="Times-Roman", fontSize=12, leading=12*1.2, alignment=TA_CENTER))
     styles.add(ParagraphStyle(name="CVDescription", fontName="Times-Italic", fontSize=12, leading=12*1.2, firstLineIndent=0.5*inch, alignment=TA_JUSTIFY))
     styles.add(ParagraphStyle(name="CVSegmentTitle", fontName="Times-Bold", fontSize=12, leading=12*1.2, alignment=TA_CENTER))
+    styles.add(ParagraphStyle(name="CVInstitutionTitle", fontName="Times-Roman", fontSize=12, leading=12*1.2, alignment=TA_LEFT))
 
     frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id='normal')
     
@@ -64,6 +65,10 @@ def create_pdf(margins):
     Elements.append(Spacer(0, 12))
     Elements.append(Paragraph("Education", style=styles["CVSegmentTitle"]))
     Elements.append(HRFlowable(width="100%", thickness=0.5, color=black))
+
+    spacer = (doc.width - doc.leftMargin/4 - stringWidth('Bandung Institute of Technology', 'Times-Bold', 12) - stringWidth('Bandung, Indonesia', 'Times-Roman', 12)) / stringWidth(" ", 'Times-Roman', 12)
+    Elements.append(Paragraph(f"<b>Bandung Institute of Technology</b>{'&nbsp;' * int(spacer-1)}Bandung, Indonesia", style=styles["CVInstitutionTitle"]))
+
 
     
     doc.addPageTemplates([PageTemplate(id="OneCol", frames=frame)])
