@@ -1,5 +1,7 @@
 from reportlab.platypus import BaseDocTemplate, Frame, Paragraph, Spacer, PageTemplate
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.pdfbase.pdfmetrics import stringWidth
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT, TA_RIGHT
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import A4
@@ -46,10 +48,19 @@ def create_pdf(margins):
     rightMargin=margins.right * inch,
     )
 
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name="CVTitle", fontName="Times-Roman", fontSize=12, leading=12*1.2, alignment=TA_CENTER))
+    styles.add(ParagraphStyle(name="CVDescription", fontName="Times-Italic", fontSize=12, leading=12*1.2, firstLineIndent=0.5*inch, alignment=TA_JUSTIFY))
+
     frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id='normal')
     
     Elements = []
-    Elements.append(Paragraph("Syafiq Ziyadul Arifin"))
+    Elements.append(Paragraph("Syafiq Ziyadul Arifin", style=styles["CVTitle"]))
+    Elements.append(Paragraph("+6282123456789 | <u><a href=\"mailto:szarifin20041@gmail.com\">szarifin20041@gmail.com</a></u> | <u><a href=\"https://linkedin.com/in/syafiqza\">linkedin.com/in/syafiqza</a></u>", style=styles["CVTitle"]))
+    Elements.append(Spacer(0, 12))
+    Elements.append(Paragraph("Spanning web development, Android development, robotics, and IoT, my interests have led me to proficiency in programming languages such as C++, Python, Go, and JavaScript. Currently in my third year of studying Information System and Technology at the Bandung Institute of Technology.", style=styles["CVDescription"]))
+    Elements.append(Spacer(0, 12))
+
     
     doc.addPageTemplates([PageTemplate(id="OneCol", frames=frame)])
     doc.build(Elements)
