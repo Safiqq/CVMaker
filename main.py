@@ -1,10 +1,11 @@
-from reportlab.platypus import BaseDocTemplate, Frame, Paragraph, Spacer, PageTemplate
+from reportlab.platypus import BaseDocTemplate, Frame, Paragraph, Spacer, PageTemplate, HRFlowable
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT, TA_RIGHT
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import A4
+from reportlab.lib.colors import black
 
 def modifiedInput(question, default_answer, answer_type):
     answer = input(f"{question} ({default_answer}) ").lower()
@@ -51,6 +52,7 @@ def create_pdf(margins):
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name="CVTitle", fontName="Times-Roman", fontSize=12, leading=12*1.2, alignment=TA_CENTER))
     styles.add(ParagraphStyle(name="CVDescription", fontName="Times-Italic", fontSize=12, leading=12*1.2, firstLineIndent=0.5*inch, alignment=TA_JUSTIFY))
+    styles.add(ParagraphStyle(name="CVSegmentTitle", fontName="Times-Bold", fontSize=12, leading=12*1.2, alignment=TA_CENTER))
 
     frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id='normal')
     
@@ -60,6 +62,8 @@ def create_pdf(margins):
     Elements.append(Spacer(0, 12))
     Elements.append(Paragraph("Spanning web development, Android development, robotics, and IoT, my interests have led me to proficiency in programming languages such as C++, Python, Go, and JavaScript. Currently in my third year of studying Information System and Technology at the Bandung Institute of Technology.", style=styles["CVDescription"]))
     Elements.append(Spacer(0, 12))
+    Elements.append(Paragraph("Education", style=styles["CVSegmentTitle"]))
+    Elements.append(HRFlowable(width="100%", thickness=0.5, color=black))
 
     
     doc.addPageTemplates([PageTemplate(id="OneCol", frames=frame)])
